@@ -1,0 +1,269 @@
+@charset "UTF-8";
+
+/* all elements */
+*
+{
+    box-sizing: border-box;
+}
+body
+{
+    margin: 0; /* remove the default margin between navbar and sides */
+    background-color: #CCE8CF; /* colour to protect eyes */
+}
+
+/* top navigation bar */
+nav
+{
+    position: fixed;
+    top: 0; /* position navbar at the top of page */
+    width: 100%; /* full width */
+    z-index: 1; /* place dropdowns in front of other elements */
+    background-color: #333333; /* not black */
+}
+nav ul
+{
+    margin: 0; /* remove default setting */
+    padding: 0; /* remove default setting */
+    list-style-type: none; /* remove bullets */
+}
+nav > ul > li
+{
+    float: left; /* get block elements of the 1st level to slide next to each other */
+}
+nav > ul > li:last-child
+{
+    float: right; /* float the last menu to the right */
+}
+nav ul li:hover
+{
+    background-color: limeGreen;
+}
+nav ul li a
+{
+    display: block; /* display links as block elements */
+    padding: 8px;
+    text-decoration: none; /* remove underline */
+    color: snow;
+}
+nav ul li a:after
+{
+    content: "\25BC"; /* black down-pointing triangle */
+}
+nav ul ul
+{
+    display: none; /* hide dropdowns by default */
+    position: absolute; /* indispensable */
+    background-color: snow;
+}
+nav ul li:hover > ul /* display dropdowns on hover */
+{
+    display: block;
+}
+nav > ul > li:last-child > ul
+{
+    right: 0; /* make dropdowns to go from right to left */
+}
+nav ul ul li /* 1st level dropdowns */
+{
+    position: relative; /* place submenus right below their parent menu */
+}
+nav ul ul li:hover
+{
+    background-color: dodgerBlue;
+}
+nav ul ul li a
+{
+    padding: 5px 35px 5px 8px; /* top right bottom left */
+    color: black;
+}
+nav ul ul li a:after
+{
+    position: absolute; /* must be used with the next property */ /*???*/
+    right: 8px; /* float arrows to the right */ /*float???*/
+    content: "\25B6"; /* black right-pointing triangle */
+}
+nav ul ul ul /* 2nd, 3rd and more levels */
+{
+    top: 0; /* rectify the position of submenus */
+    left: 100%; /* rectify the position of submenus */
+    white-space: nowrap; /* Text continues on the same line. */
+}
+nav ul li a:only-child:after
+{
+    content: "";
+}
+nav ul ul li a:only-child
+{
+    padding-right: 8px;
+}
+
+/* header */
+header
+{
+    overflow: auto; /* prevent undisplayed image overflowing outside of HEADER */
+    margin: 33px 0; /* top: avoid content overlay */
+}
+header h1
+{
+    text-align: center;
+    color: purple;
+}
+header img
+{
+    width: 58%;
+}
+
+/* main */
+main
+{
+    float: left; /* left column */
+    width: 75%;
+    border-right: 1px solid chocolate;
+}
+/** article **/
+article
+{
+    overflow: auto; /* prevent right BUTTON overflowing outside of ARTICLE */
+    border-top: 1px solid chocolate;
+    padding: 16px;
+}
+article h2
+{
+    border-left: 15px solid crimson;
+    padding-left: 5px;
+    color: crimson;
+}
+article h3
+{
+    text-align: right;
+    color: chocolate;
+}
+article button
+{
+    margin-top: 16px;
+    border: none;
+    border-radius: 5px;
+    padding: 16px;
+    background-color: crimson;
+    color: snow;
+    cursor: pointer;
+}
+/*** form ***/
+article form
+{
+    display: none;
+    float: right;
+    clear: right; /* no floating elements allowed on the right side */
+    margin-top: 8px;
+    border-radius: 5px;
+    padding: 8px;
+    background-color: springGreen;
+}
+article form input[type=text],
+article form input[type=email],
+article form textarea
+{
+    width: 100%;
+    margin: 8px 0;
+    border: 1px solid;
+    border-radius: 3px;
+    padding: 8px;
+}
+article form fieldset
+{
+    margin-bottom: 5px;
+}
+article form fieldset label:not(:last-child)
+{
+    margin-right: 15px;
+}
+article form input[type=submit],
+article form input[type=reset]
+{
+    float: right;
+    margin-left: 8px;
+    border: none;
+    border-radius: 3px;
+    padding: 15px;
+    background-color: royalBlue;
+    color: snow;
+    cursor: pointer;
+}
+article button:hover,
+article form input[type=submit]:hover,
+article form input[type=reset]:hover
+{
+    background-color: red;
+    color: yellow;
+}
+/*** section ***/
+section img,
+section video
+{
+    width: 81%;
+}
+
+/* right navigation menu */
+aside
+{
+    float: right; /* right column */
+    width: 25%;
+    border-top: 1px solid chocolate;
+}
+aside button
+{
+    float: left; /* get block elements of the 1st level to slide next to each other */
+    width: 33.33%;
+/*     border-right: 1px ridge chocolate; */
+/*     border-bottom: 1px ridge chocolate; */
+/*     border: none; */
+    padding: 16px 0;
+    cursor: pointer;
+/*     backgroundcolor !!! */
+}
+aside button:hover
+{
+    background-color: red;
+    color: yellow;
+}
+aside ol
+{
+/*    display: none;  hide other tabs !!!will be uncommented*/
+    width: 88%;
+    margin: 88px auto 8px; /* "auto" makes UL horizontally centered. */
+}
+aside ol li
+{
+    line-height: 215%;
+    border-bottom: 1px dotted chocolate;
+    font-weight: bold;
+}
+aside ol li a
+{
+    display: block;
+    text-decoration: none;
+    color: chocolate;
+}
+aside ol li a:hover
+{
+    background-color: red;
+    color: yellow;
+}
+
+/* footer */
+footer
+{
+    clear: both; /* no floating elements allowed on both sides */
+    border-top: 5px solid chocolate;
+    padding: 8px;
+    text-align: right;
+}
+
+/* all multimedia */
+video,
+audio,
+img
+{
+    display: block;
+    margin: auto;
+}
