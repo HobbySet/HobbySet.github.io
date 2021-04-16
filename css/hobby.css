@@ -234,8 +234,8 @@ aside ol
 }
 aside ol li
 {
-    line-height: 215%;
     border-bottom: 1px dotted chocolate;
+    line-height: 215%;
     font-weight: bold;
 }
 aside ol li a

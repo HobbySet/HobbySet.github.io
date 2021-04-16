@@ -1,7 +1,7 @@
 function getPage(url)
 {
-    var i = 0;
     var splitURL = url.split("/");
+    var i = 0;
     var last = splitURL.length - 1;
     var nodes = []; // effective nodes
     var node = "";
@@ -12,14 +12,17 @@ function getPage(url)
         name: splitURL[last].split(".").shift(),
         prefix: "", // prefix to go up directories
         path: "", // effective path without extension
-        parent: DATA, // parent node in the DATA
+        parent: DATA, // parent node in DATA
         main: {}/////tobedeleted
     };
+    
     page.top = page.name;
     page.path = page.name;
+    
     for (i = last - 1; i >= 0; i--)
     {
         page.prefix += "../";
+        
         if (splitURL[i] in LANGUAGES)
         {
             page.language = splitURL[i];
@@ -32,8 +35,11 @@ function getPage(url)
             page.path = splitURL[i] + "/" + page.path;
         }
     }
+    
     for (node of nodes) page.parent = page.parent[node].aside;
+    
     page.main = page.parent[page.name].main;/////tobedeleted
+    
     return page;
 }
 
@@ -48,9 +54,11 @@ function shuffle(original)
     var j = 0; // index of the item to be swapped
     var t = ""; // temporary variable
     var shuffled = original.slice(0); // clone and not change the original array
+    
     for (i = original.length - 1; i > 0; i--)
     {
         j = getRandomInteger(i + 1);
+        
         if (i != j)
         {
             t = shuffled[j];
@@ -58,6 +66,7 @@ function shuffle(original)
             shuffled[i] = t;
         }
     }
+    
     return shuffled;
 }
 
@@ -86,9 +95,11 @@ function getHeading(page)
     var pageInfo = page.parent[page.name];
     var headerInfo = pageInfo.header;
     var headingInfo = "";
+    
     if ("h1" in headerInfo)
     {
         headingInfo = mergeLanguage(headerInfo.h1, page.language);
+        
         if
         (
             DICTIONARY.unavailable[page.language] === headingInfo &&
@@ -113,13 +124,15 @@ function showORhide(element)
 function showSlides(slide, i)
 {
     var j = i + 1;
+    
     if (slide.length == j) j = 0;
+    
     showORhide(slide[i]);
     showORhide(slide[j]);
     setTimeout(showSlides, TIMING, slide, j);
 }
 
-function followedByColon(text, language)
+function followedBYcolon(text, language)
 {
     return DICTIONARY[text][language] + DICTIONARY.colon[language];
 }
@@ -149,8 +162,8 @@ function createMenus(page, path, parent) // create menus recursively
                 a.style.color = "yellow";
             }
             
-            if (page.path !== currentPath) a.href = page.prefix + page.language + "/" + currentPath + HTML;
             a.innerHTML = mergeLanguage(child.nav, page.language);
+            if (page.path !== currentPath) a.href = page.prefix + page.language + "/" + currentPath + HTML;///getlink?
             li.appendChild(a);
             
             if ("object" === typeof child.aside)
@@ -158,6 +171,7 @@ function createMenus(page, path, parent) // create menus recursively
                 submenu = createMenus(page, currentPath + "/", child.aside);
                 if (submenu.hasChildNodes()) li.appendChild(submenu);
             }
+            
             ul.appendChild(li);
         }
     
@@ -197,7 +211,7 @@ function transformTag(page, original, parent)
             parent.appendChild(document.createElement(BR));
             transformed = LB;
             break;
-        case BOOKMARK: // bookmark in the same page
+        case BOOKMARK: // bookmark within the same page
             transformed = transform2a(original[BETWEEN], "#" + original[HREF]);
             break;
         case PAGE: // page with ".html" extension
@@ -245,7 +259,7 @@ function createList(page, list, parent) // "list" is an array.
 function createParagraph(page, paragraph, parent)
 {
     var pa; // string or array
-    var transformed;
+    var transformed = [];
     var element;
     
     if ("string" === typeof paragraph) parent.appendChild(document.createTextNode(paragraph));
@@ -270,6 +284,7 @@ function createParagraph(page, paragraph, parent)
                     default:
                         createParagraph(page, transformed[BETWEEN], element);
                 }
+                
                 parent.appendChild(element);
             }
 }
@@ -344,13 +359,13 @@ function createForm(page, articleID)
     var textarea = document.createElement("textarea"); // advice
     var input; // for submit & reset
     
-    var i;
+    var j;
     var interests = Object.keys(DATA);
     var fb = "";
     
 // name
     labelName.htmlFor = articleID + LabelName;
-    labelName.innerHTML = followedByColon(LabelName, page.language);
+    labelName.innerHTML = followedBYcolon(LabelName, page.language);
     form.appendChild(labelName);
     
     inputName.type = "text";
@@ -360,29 +375,31 @@ function createForm(page, articleID)
     form.appendChild(inputName);
     
 // sex
-    legendSex.innerHTML = followedByColon(LegendSex, page.language);
+    legendSex.innerHTML = followedBYcolon(LegendSex, page.language);
     fieldset.appendChild(legendSex);
     
-    for (i in LabelSex)
-    {
-        inputSex[i] = document.createElement("input");
-        inputSex[i].type = "radio";
-        inputSex[i].name = LegendSex;
-        inputSex[i].id = articleID + LabelSex[i];
-        inputSex[i].required = true;
-        fieldset.appendChild(inputSex[i]);
-        
-        labelSex[i] = document.createElement("label");
-        labelSex[i].htmlFor = inputSex[i].id;
-        labelSex[i].innerHTML = DICTIONARY[LabelSex[i]][page.language];
-        fieldset.appendChild(labelSex[i]);
-    }
-    
+    LabelSex.forEach
+    (
+        function(ls, i)
+        {
+            inputSex[i] = document.createElement("input");
+            inputSex[i].type = "radio";
+            inputSex[i].name = LegendSex;
+            inputSex[i].id = articleID + ls;
+            inputSex[i].required = true;
+            fieldset.appendChild(inputSex[i]);
+            
+            labelSex[i] = document.createElement("label");
+            labelSex[i].htmlFor = inputSex[i].id;
+            labelSex[i].innerHTML = DICTIONARY[ls][page.language];
+            fieldset.appendChild(labelSex[i]);
+        }
+    );
     form.appendChild(fieldset);
     
 // E-mail
     labelEmail.htmlFor = articleID + LabelEmail;
-    labelEmail.innerHTML = followedByColon(LabelEmail, page.language);
+    labelEmail.innerHTML = followedBYcolon(LabelEmail, page.language);
     form.appendChild(labelEmail);
     
     inputEmail.type = "email";
@@ -394,28 +411,30 @@ function createForm(page, articleID)
 // interest
     fieldset = document.createElement("fieldset");
     
-    legendInterest.innerHTML = followedByColon(LegendInterest, page.language);
+    legendInterest.innerHTML = followedBYcolon(LegendInterest, page.language);
     fieldset.appendChild(legendInterest);
     
-    for (i in interests)
-    {
-        inputInterest[i] = document.createElement("input");
-        inputInterest[i].type = "checkbox";
-        inputInterest[i].name = LegendInterest;
-        inputInterest[i].id = articleID + interests[i];
-        fieldset.appendChild(inputInterest[i]);
-        
-        labelInterest[i] = document.createElement("label");
-        labelInterest[i].htmlFor = inputInterest[i].id;
-        labelInterest[i].innerHTML = DATA[interests[i]].nav[page.language]; // need not use "mergeLanguage"
-        fieldset.appendChild(labelInterest[i]);
-    }
-    
+    interests.forEach
+    (
+        function(interest, i)
+        {
+            inputInterest[i] = document.createElement("input");
+            inputInterest[i].type = "checkbox";
+            inputInterest[i].name = LegendInterest;
+            inputInterest[i].id = articleID + interest;
+            fieldset.appendChild(inputInterest[i]);
+            
+            labelInterest[i] = document.createElement("label");
+            labelInterest[i].htmlFor = inputInterest[i].id;
+            labelInterest[i].innerHTML = DATA[interest].nav[page.language]; // need not use "mergeLanguage"
+            fieldset.appendChild(labelInterest[i]);
+        }
+    );
     form.appendChild(fieldset);
     
 // advice
     labelAdvice.htmlFor = articleID + LabelAdvice;
-    labelAdvice.innerHTML = followedByColon(LabelAdvice, page.language);
+    labelAdvice.innerHTML = followedBYcolon(LabelAdvice, page.language);
     form.appendChild(labelAdvice);
     
     textarea.id = labelAdvice.htmlFor;
@@ -452,11 +471,11 @@ function createForm(page, articleID)
             }
         
         inputtedContents += "\n" + labelEmail.innerHTML + inputEmail.value;
-
+        
         inputtedContents += "\n" + legendInterest.innerHTML;
-        for (i in interests)
-            if (inputInterest[i].checked)
-                checkedInterests += labelInterest[i].innerHTML + DICTIONARY.comma[page.language];
+        for (j in interests)
+            if (inputInterest[j].checked)
+                checkedInterests += labelInterest[j].innerHTML + DICTIONARY.comma[page.language];
         if (0 == checkedInterests.length) inputtedContents += DICTIONARY.none[page.language];
         else inputtedContents += checkedInterests.trim().slice(0, -1); // trim() is used to remove whitespace at the end.
         
@@ -570,13 +589,13 @@ function createNav(page)
         ul.appendChild(li); // So it is with "li".
     }
 
-    li = document.createElement(LI); // So "li" can be used again.
+    li = document.createElement(LI); // Thus "li" can be used again.
     a = document.createElement(A); // So it is with "a".
     a.innerHTML = DICTIONARY.option[page.language];
     li.appendChild(a);
     li.appendChild(ul); // "ul" will become useless after UL is appended.
     
-    ul = createMenus(page, "", DATA); // So "ul" can be used again.
+    ul = createMenus(page, "", DATA); // Thus "ul" can be used again.
     ul.appendChild(li); // add options to top NAV bar
     nav.appendChild(ul);
     document.body.appendChild(nav);
@@ -640,6 +659,7 @@ function createHeader(page)
 function createHalfPage(url) // set link & title; create NAV & HEADER
 {
     var page = getPage(url);
+    
     var link = document.createElement("link");
     
 // link CSS

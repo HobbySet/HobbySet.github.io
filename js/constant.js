@@ -6,7 +6,7 @@ var PLAY = 0;
 
 // indexes of tuple
 var TAG = 0; // HTML tags or other types
-var BETWEEN = 1; // content between tags
+var BETWEEN = 1; // contents between tags
 var HREF = 2;
 var PG = 2; // page
 
@@ -90,7 +90,6 @@ var LANGUAGES =
     zh: "中文"
 };
 
-// dictionary
 var DICTIONARY =
 {
     advice:

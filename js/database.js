@@ -2178,7 +2178,7 @@ var DATA =
                                             ja: "さっき彼女を揶揄ったところだ！",
                                             zh: "刚才他非礼我女朋友来着！"
                                         },
-                                        content: [[VIDEO]],
+                                        content: [[VIDEO]], // Ep.2
                                         comment:
                                         [
                                             [
@@ -2200,7 +2200,7 @@ var DATA =
                                             ja: "あなたが揶揄いたい",
                                             zh: "我得吃你的豆腐！"
                                         },
-                                        content: [[VIDEO]],
+                                        content: [[VIDEO]], // Ep.8
                                         comment:
                                         [
                                             [
